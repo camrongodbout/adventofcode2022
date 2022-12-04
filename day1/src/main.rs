@@ -9,23 +9,22 @@ fn main() {
     // File hosts must exist in current path before this produces output
     if let Ok(lines) = read_lines("./calories") {
         // Consumes the iterator, returns an (Optional) String
-        let mut current_calories: f32 = 0.0;
-        let mut max_calories: f32 = 0.0;
+        let mut current_calories: i64 = 0;
+        let mut calorie_counts = Vec::new();
         for line in lines {
             if let Ok(inp) = line {
                 println!("{}", inp);
                 if inp.len() == 0 {
-                    if max_calories < current_calories {
-                        max_calories = current_calories;
-                    }
-                    current_calories = 0.0;
+                    calorie_counts.push(current_calories);
+                    current_calories = 0;
                     continue;
                 }
-                let calorie: f32 = inp.parse().unwrap();
+                let calorie: i64 = inp.parse().unwrap();
                 current_calories += calorie;
             }
         }
-        println!("{}", max_calories)
+        calorie_counts.sort();
+        println!("Top 3 max values: {:?}", &calorie_counts[calorie_counts.len()-3 ..]);
     }
 }
 
